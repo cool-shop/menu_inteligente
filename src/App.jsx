@@ -403,7 +403,10 @@ function HomeDashboard({ dishes, calendarData, setCalendarData, isOwner, user, n
           setCalendarData={setCalendarData}
           isOwner={isOwner}
           user={user}
-          onDateSelect={(date) => setSelectedDateStr(date)}
+          onDateSelect={(date) => {
+            setSelectedDateStr(date);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
           compact={true}
         />
       </div>

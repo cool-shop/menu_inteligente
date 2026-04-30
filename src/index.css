@@ -79,7 +79,13 @@ body::after {
 #root {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+  }
 }
 
 /* Typography */
@@ -487,6 +493,12 @@ select:focus {
   gap: 2rem;
 }
 
+@media (max-width: 600px) {
+  .grid-3-col {
+    gap: 1rem;
+  }
+}
+
 @media (min-width: 768px) {
   .grid-3-col {
     grid-template-columns: 1fr 1fr 1fr;
@@ -522,7 +534,7 @@ select:focus {
   background: var(--surface-color);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 2rem;
+  padding: 1.5rem;
   max-width: 500px;
   width: 100%;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
@@ -531,6 +543,13 @@ select:focus {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-y: auto;
   max-height: 90vh;
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    padding: 1rem;
+    padding-top: 2.5rem;
+  }
 }
 
 .modal-overlay.active .modal-content {
@@ -591,6 +610,14 @@ select:focus {
   padding: 12px;
   border-radius: 12px;
   border: 1px solid var(--border-color);
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .calendar-grid {
+    gap: 4px;
+    padding: 8px;
+  }
 }
 
 .calendar-day-header {
@@ -694,12 +721,17 @@ select:focus {
 
 @media (max-width: 600px) {
   .calendar-day {
-    min-height: 60px;
+    min-height: 50px;
     padding: 4px;
   }
 
+  .calendar-day-header {
+    font-size: 0.75rem;
+    padding: 5px 0;
+  }
+
   .day-number {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .meal-dot {
@@ -710,6 +742,16 @@ select:focus {
   .meal-assign-row {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .range-info {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .date-badge {
+    width: 100%;
+    min-width: auto;
   }
 }
 
@@ -737,6 +779,13 @@ select:focus {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .dish-selection-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
+  }
 }
 
 .dish-option-card {
@@ -911,7 +960,7 @@ select:focus {
   border-radius: 20px;
   font-size: 0.85rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  min-width: 150px;
+  min-width: 120px;
   text-align: center;
 }
 

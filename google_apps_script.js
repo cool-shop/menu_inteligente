@@ -18,7 +18,7 @@ const CALENDAR_SHEET = 'Calendario';
 
 function setup() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  
+
   // Hoja de Catálogo de Comidas
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
@@ -38,7 +38,7 @@ function setup() {
   // Fuerza la solicitud de permisos para peticiones externas (UrlFetchApp)
   try {
     UrlFetchApp.getRequest("https://www.google.com");
-  } catch(e) {}
+  } catch (e) { }
 }
 
 // Función auxiliar para guardar imágenes Base64 en un directorio público de tu Drive
@@ -54,14 +54,14 @@ function saveImageToDrive(base64Data, filename) {
       // Give the folder public viewing access so images can be displayed
       folder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
     }
-    
+
     // El formato es "data:image/jpeg;base64,ABC..."
     const mimeString = base64Data.split(',')[0].split(':')[1].split(';')[0];
     const base64Str = base64Data.split(',')[1];
-    
+
     const blob = Utilities.newBlob(Utilities.base64Decode(base64Str), mimeString || 'image/jpeg', filename + "_" + new Date().getTime() + ".jpg");
     const file = folder.createFile(blob);
-    
+
     // Para renderizar imágenes en HTML desde Drive de forma fiable (evita bloqueos de OpaqueResponseBlocking)
     return "https://lh3.googleusercontent.com/d/" + file.getId();
   } catch (e) {
@@ -74,7 +74,7 @@ function doGet(e) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     if (!ss) return createJsonResponse({ status: 'error', message: 'No spreadsheet access' });
-    
+
     const action = e.parameter.action;
 
     if (action === 'getCalendar') {
@@ -127,7 +127,8 @@ function doGet(e) {
 // Agrega aquí los correos que pueden editar la información
 const AUTHORIZED_EMAILS = [
   'tonyvllegas@gmail.com',
-  'v8580055@gmail.com'
+  'v8580055@gmail.com',
+  'munozerika237@gmail.com'
 ];
 
 // Maneja peticiones POST
@@ -149,9 +150,9 @@ function doPost(e) {
     if (postData.action === 'saveCalendarAssignment') {
       const calSheet = ss.getSheetByName(CALENDAR_SHEET) || ss.insertSheet(CALENDAR_SHEET);
       const { date, breakfastId, lunchId, dinnerId } = postData.payload;
-      
+
       // Asegurarnos de que el date viene como YYYY-MM-DD
-      const targetDateStr = date; 
+      const targetDateStr = date;
       const data = calSheet.getDataRange().getValues();
       let rowIndex = -1;
 
@@ -159,7 +160,7 @@ function doPost(e) {
       for (let i = 1; i < data.length; i++) {
         let rowDate = data[i][0];
         let rowDateStr = "";
-        
+
         if (rowDate instanceof Date) {
           rowDateStr = Utilities.formatDate(rowDate, "GMT", "yyyy-MM-dd");
         } else {
@@ -179,13 +180,13 @@ function doPost(e) {
       } else {
         calSheet.getRange(rowIndex, 1, 1, 4).setValues([rowData]);
       }
-      return createJsonResponse({ 
-        status: 'success', 
-        debug: { 
-          action: 'saved', 
+      return createJsonResponse({
+        status: 'success',
+        debug: {
+          action: 'saved',
           row: rowIndex === -1 ? 'new' : rowIndex,
-          data: rowData 
-        } 
+          data: rowData
+        }
       });
     }
 
@@ -194,7 +195,7 @@ function doPost(e) {
       if (!ss) {
         return createJsonResponse({ status: 'error', message: 'No se pudo acceder a la hoja de cálculo.' });
       }
-      
+
       let sheet = ss.getSheetByName(SHEET_NAME);
       if (!sheet) {
         setup();
@@ -214,7 +215,7 @@ function doPost(e) {
         for (let j = 0; j < dishes.length; j++) {
           let dishImage = dishes[j].image || '';
           if (dishImage.startsWith('data:image/')) {
-             dishImage = saveImageToDrive(dishImage, 'platillo_' + dishes[j].id);
+            dishImage = saveImageToDrive(dishImage, 'platillo_' + dishes[j].id);
           }
 
           rows.push([
@@ -234,7 +235,7 @@ function doPost(e) {
 
       return createJsonResponse({ status: 'success' });
     }
-    
+
     return createJsonResponse({ status: 'error', message: 'Acción no reconocida' });
   } catch (error) {
     return createJsonResponse({ status: 'error', message: 'Error de servidor: ' + error.toString() });
